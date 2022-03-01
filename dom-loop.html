@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>CodePen - DOM loop 1</title>
+  <link rel="stylesheet" href="./style.css">
+  <style>
+      * {
+  box-sizing: border-box;
+}
+
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding: 1rem;
+  border: 10px solid;
+  margin: 2rem;
+}
+
+.box {
+  min-width: 150px;
+  height: 150px;
+  border: 3px solid;
+  background: #cba;
+  padding: 0rem;
+  font-size: 6rem;
+  line-height: 150px;
+  text-align: center;
+  color: #a98;
+  transition: all 0.5s;
+}
+
+/* write rotate class here */
+
+.class1 {
+    transform: rotate(360deg);
+}
+
+  </style>
+
+</head>
+<body>
+<!-- partial:index.partial.html -->
+<h2>Complete the challenge below</h2>
+
+<button class="make-boxes" data-holder=".container">Make Boxes</button>
+
+<section class="container">
+  <p>no boxes yet :( </p>
+</section>
+
+
+<!-- partial -->
+  <script>
+      //start by making the "make boxes" button active
+let myButton = document.querySelector(".make-boxes");
+myButton.addEventListener("click", renderBoxes);
+
+//get the number of boxes to make from user
+function getNumBoxes() {
+  var numBoxes = Number(prompt("how many boxes?"));
+
+  if (numBoxes <= 0 || Number.isNaN(numBoxes)) {
+    return 0;
+  }
+  return numBoxes;
+}
+
+//Makes boxes based on user input.
+//We use tempHolder to build the boxes in memory only.
+function makeBoxes() {
+  const numBoxes = getNumBoxes();
+  const tempHolder = document.createDocumentFragment();
+
+  // Repeat Loop
+  for (let i = 1; i <= numBoxes; i++) {
+    let box = document.createElement("DIV");
+    let txt = document.createTextNode(i);
+    box.className = "box";
+
+      box.addEventListener('click', (e) => {
+        e.target.classList.toggle('class1');
+      });
+      
+    box.appendChild(txt);
+    tempHolder.appendChild(box);
+  } //end loop
+
+  return tempHolder;
+}
+
+// actually put the boxes we get from makeBoxes on the page
+function renderBoxes(e) {
+  //get the data-holder attribute value from the button
+  const containerName = e.target.dataset.holder;
+  const container = document.querySelector(containerName);
+  const boxes = makeBoxes();
+
+  if (boxes.children.length === 0) {
+    container.innerHTML = "Try Again. Please type a positive whole number";
+  } else {
+    // clearout previous stuff before adding new boxes
+    container.innerHTML = "";
+    container.appendChild(boxes);
+  }
+}
+  </script>
+
+</body>
+</html>
